@@ -9,7 +9,10 @@ const router = express.Router();
 router.get('/list', (req, res) => {
   try {
     const files = getReportsList();
-    res.json({ status: 'ok', files });
+    res.json({ 
+        status: 'ok', 
+        files 
+    });
   } catch (err) {
     res.status(500).json({ status: 'error', error: err.message });
   }
