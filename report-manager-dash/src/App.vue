@@ -16,11 +16,11 @@
 
 <script setup>
 import { ref } from 'vue';
-import { compareReports } from './api/reportsApi';
+import { compareReports } from '../api/reportsApi.js';
 
-import ReportSelector from './components/ReportSelector.vue';
-import AvgComparisonChart from './components/AvgComparisonChart.vue';
-import ComparisonTable from './components/ComparisonTable.vue';
+import ReportSelector from '../components/ReportSelector.vue';
+import AvgComparisonChart from '../components/AvgComparisonChart.vue';
+import ComparisonTable from '../components/ComparisonTable.vue';
 
 const comparison = ref(null);
 
