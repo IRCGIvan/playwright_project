@@ -1,11 +1,31 @@
-<script setup></script>
-
 <template>
-  <h1>You did it!</h1>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
+  <v-app>
+    <v-main>
+      <v-container>
+        <h1>Playwright Reports Dashboard</h1>
+
+        <ReportSelector @compare="onCompare" />
+
+        <AvgComparisonChart :comparison="comparison" />
+
+        <ComparisonTable :comparison="comparison" />
+      </v-container>
+    </v-main>
+  </v-app>
 </template>
 
-<style scoped></style>
+<script setup>
+import { ref } from 'vue';
+import { compareReports } from './api/reportsApi';
+
+import ReportSelector from './components/ReportSelector.vue';
+import AvgComparisonChart from './components/AvgComparisonChart.vue';
+import ComparisonTable from './components/ComparisonTable.vue';
+
+const comparison = ref(null);
+
+async function onCompare({ a, b }) {
+  const res = await compareReports(a, b);
+  comparison.value = res.comparison;
+}
+</script>
