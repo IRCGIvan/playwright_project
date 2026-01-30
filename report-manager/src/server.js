@@ -15,7 +15,7 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
-const PORT = 3005;
+const PORT = 3001;
 
 app.listen(PORT, () => {
   console.log(`🚀 Playwright Reports Analyzer running on port ${PORT}`);
