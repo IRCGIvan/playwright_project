@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-export class FullBookingFlow {
+export class HotelBookingFlow {
   /**
    * Ejecuta el flujo completo de booking
    * @param {import('@playwright/test').Page} page

@@ -7,8 +7,8 @@
     "test": "playwright test",
     "test:booking": "playwright test tests/full-booking.spec.js",
     "report": "playwright show-report",
-    "api": "node api/server.js",
-    "dev": "nodemon api/server.js"
+    "api": "node src/server.js",
+    "dev": "nodemon src/server.js"
   },
   "keywords": [],
   "author": "",
@@ -20,7 +20,9 @@
   "dependencies": {
     "@playwright/test": "^1.57.0",
     "@types/node": "^25.0.8",
+    "cors": "^2.8.6",
     "dotenv": "^17.2.3",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "morgan": "^1.10.1"
   }
 }

@@ -18,7 +18,8 @@ export class ReportConsolidator {
   }
 
   consolidate() {
-    const dashboard = {};
+    
+    const consolid = {};
 
     const testTypes = fs
       .readdirSync(this.reportsRoot, { withFileTypes: true })
@@ -33,8 +34,8 @@ export class ReportConsolidator {
         const testResults = parseJson(reportPath);
 
         for (const test of testResults) {
-          if (!dashboard[test.title]) {
-            dashboard[test.title] = {
+          if (!consolid[test.title]) {
+            consolid[test.title] = {
               minTime: null,
               maxTime: null,
               avgTime: 0,
@@ -47,7 +48,7 @@ export class ReportConsolidator {
             };
           }
 
-          const metrics = dashboard[test.title];
+          const metrics = consolid[test.title];
 
           metrics.totalRuns++;
           metrics.durations.push(test.durationMs);
@@ -70,8 +71,8 @@ export class ReportConsolidator {
     }
 
     // cálculos finales
-    for (const title of Object.keys(dashboard)) {
-      const m = dashboard[title];
+    for (const title of Object.keys(consolid)) {
+      const m = consolid[title];
 
       const totalTime = m.durations.reduce((a, b) => a + b, 0);
       m.avgTime = Math.round(totalTime / m.durations.length);
@@ -81,7 +82,7 @@ export class ReportConsolidator {
       delete m.durations; // limpiamos payload
     }
 
-    return dashboard;
+    return consolid;
   }
 
   getFailedReports() {
