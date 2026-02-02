@@ -9,16 +9,15 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const app = express();
-const PORT = 3000;
+const router = express.Router();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-app.use(express.json());
+router.use(express.json());
 
 //posibles parametros para devolver info sobre la ejecucion del comando (error, stdout, stderr)=>{}
-app.post('/run/booking-hotel', (req, res) => {
+router.post('/run/booking-hotel', (req, res) => {
     const { itineraryId } = req.body;
 
     if (!itineraryId) {
@@ -28,7 +27,7 @@ app.post('/run/booking-hotel', (req, res) => {
         });
     }
 
-    const cmd = 'npx playwright test tests/full-booking.spec.js';
+    const cmd = `npx playwright test ${process.env.TEST_DIR}full-booking.spec.js`;
     try {
         exec(cmd, { cwd: path.resolve(__dirname, '..'),
                     env: {
@@ -37,8 +36,7 @@ app.post('/run/booking-hotel', (req, res) => {
             }
          }, () => {
             res.json({
-                status: 'ok',
-                output: 'Para generar el reporte ejecute el servicio /archive-report'
+                status: 'ok'
             });
         });
     } 
@@ -51,7 +49,7 @@ app.post('/run/booking-hotel', (req, res) => {
 });
 
 //archiva los reportes incluida la data generada por play en caso que falle alguna prueba
-app.post('/archive-report', (req, res) => {
+router.post('/archive-report', (req, res) => {
   const { itineraryId } = req.body;
 
   if (!itineraryId) {
@@ -63,8 +61,7 @@ app.post('/archive-report', (req, res) => {
 
   try {
     const playwrightReportDir = path.resolve(
-      __dirname,
-      '../playwright-report'
+      process.env.REPORT_PATH
     );
 
     const sourceHtml = path.join(playwrightReportDir, 'index.html'); // some versions use index.html
@@ -79,8 +76,7 @@ app.post('/archive-report', (req, res) => {
     }
 
     const targetDir = path.resolve(
-      __dirname,
-      `../reports/itinerary-${itineraryId}`
+      `${process.env.TARGET_REPORT_DIR}/itinerary-${itineraryId}`
     );
 
     fs.mkdirSync(targetDir, { recursive: true });
@@ -122,9 +118,9 @@ app.post('/archive-report', (req, res) => {
 });
 
 //posibles parametros para devolver info sobre la ejecucion del comando (error, stdout, stderr)=>{}
-app.post('/run/widget', (req, res) => {
+router.post('/run/widget', (req, res) => {
     
-    const cmd = 'npx playwright test tests/search_widget.spec.js';
+    const cmd = `npx playwright test ${process.env.TEST_DIR}search_widget.spec.js`;
     try {
         exec(cmd, { cwd: path.resolve(__dirname, '..'),
          }, () => {
@@ -143,7 +139,7 @@ app.post('/run/widget', (req, res) => {
 });
 
 //posibles parametros para devolver info sobre la ejecucion del comando (error, stdout, stderr)=>{}
-app.post('/run/reservation-summary', (req, res) => {
+router.post('/run/reservation-summary', (req, res) => {
     
     const cmd = 'npx playwright test tests/reserv-summary.spec.js';
     try {
@@ -164,7 +160,7 @@ app.post('/run/reservation-summary', (req, res) => {
 });
 
 //posibles parametros para devolver info sobre la ejecucion del comando (error, stdout, stderr)=>{}
-app.post('/run/display-reservation', (req, res) => {
+router.post('/run/display-reservation', (req, res) => {
     
     const cmd = 'npx playwright test tests/display-reservation.spec.js';
     try {
@@ -186,12 +182,11 @@ app.post('/run/display-reservation', (req, res) => {
 
 // para gestionar los reportes de partes especificas del sistema
 // widgets display summary, etc...
-app.post('/reports/agent', (req, res) => {
+router.post('/reports/agent', (req, res) => {
   const { rpt_type } = req.body;
   try {
     const playwrightReportDir = path.resolve(
-      __dirname,
-      '../playwright-report'
+      process.env.REPORT_PATH
     );
 
     const sourceHtml = path.join(playwrightReportDir, 'index.html'); // some versions use index.html
@@ -208,8 +203,7 @@ app.post('/reports/agent', (req, res) => {
     const rndnumber = Math.floor(Math.random() * Math.pow(10, 6));
 
     const targetDir = path.resolve(
-      __dirname,
-      `../reports/${rpt_type}-${rndnumber}`
+      `${process.env.TARGET_REPORT_DIR}/${rpt_type}-${rndnumber}`
     );
 
     fs.mkdirSync(targetDir, { recursive: true });
@@ -250,17 +244,11 @@ app.post('/reports/agent', (req, res) => {
   }
 });
 
-app.use(
-  '/report',
-  express.static(path.resolve(__dirname, '../playwright-report'))
-);
-
-
 // Consolida la informacion de las pruebas realizadas en un solo json
-app.get('/reports/consolidate', (req, res) => {
+router.get('/reports/consolidate', (req, res) => {
   try {
     const consolidator = new ReportConsolidator(
-      path.resolve(__dirname, '../reports')
+      path.resolve(process.env.TARGET_REPORT_DIR)
     );
 
     const data = consolidator.consolidate();
@@ -280,7 +268,6 @@ app.get('/reports/consolidate', (req, res) => {
     const fileName = `consolidated_results_${timestamp}.json`;
     //ruta del archivo
     const outputPath = path.resolve(
-      __dirname,
       process.env.CONSOLID_RESULT_PATH,
       fileName
     );
@@ -309,7 +296,7 @@ app.get('/reports/consolidate', (req, res) => {
 });
 
 //listado de reportes fallidos
-app.get('/reports/failed', (req, res) => {
+router.get('/reports/failed', (req, res) => {
   try {
     const service = new ReportConsolidator(
       path.resolve(__dirname, '../reports')
@@ -332,7 +319,7 @@ app.get('/reports/failed', (req, res) => {
 });
 
 // endpoint para listar reportes
-app.get('/reports/list', (req, res) => {
+router.get('/reports/list', (req, res) => {
   const reportsDir = path.resolve(__dirname, '../consolid_results');
 
   const files = fs.readdirSync(reportsDir)
@@ -346,7 +333,7 @@ app.get('/reports/list', (req, res) => {
 
 
 //comparativa de datos entre reportes
-app.get('/reports/compare', (req, res) => {
+router.get('/reports/compare', (req, res) => {
   const { a, b } = req.query;
 
   if (!a || !b) {
@@ -391,7 +378,4 @@ app.get('/reports/compare', (req, res) => {
 });
 
 
-
-app.listen(PORT, () => {
-  console.log(`API listening on http://localhost:${PORT}`);
-});
+export default router;

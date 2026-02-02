@@ -7,8 +7,8 @@
     "test": "playwright test",
     "test:booking": "playwright test tests/full-booking.spec.js",
     "report": "playwright show-report",
-    "api": "node api/server.js",
-    "dev": "nodemon api/server.js"
+    "api": "node src/server.js",
+    "dev": "nodemon src/server.js"
   },
   "keywords": [],
   "author": "",
