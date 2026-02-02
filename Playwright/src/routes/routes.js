@@ -102,11 +102,9 @@ router.post('/archive-report', (req, res) => {
         );
     }
     
-
     res.json({
       status: 'ok',
-      message: 'Reporte archivado correctamente',
-      reportUrl: `/reports/itinerary-${itineraryId}/report.html`
+      message: 'Reporte archivado correctamente'
     });
 
   } catch (error) {
@@ -125,8 +123,7 @@ router.post('/run/widget', (req, res) => {
         exec(cmd, { cwd: path.resolve(__dirname, '..'),
          }, () => {
             res.json({
-                status: 'ok',
-                output: 'Para generar el reporte ejecute el servicio /reporter-manager'
+                status: 'ok'
             });
         });
     } 
@@ -141,13 +138,12 @@ router.post('/run/widget', (req, res) => {
 //posibles parametros para devolver info sobre la ejecucion del comando (error, stdout, stderr)=>{}
 router.post('/run/reservation-summary', (req, res) => {
     
-    const cmd = 'npx playwright test tests/reserv-summary.spec.js';
+    const cmd = `npx playwright test ${process.env.TEST_DIR}reserv-summary.spec.js`;
     try {
         exec(cmd, { cwd: path.resolve(__dirname, '..'),
          }, () => {
             res.json({
-                status: 'ok',
-                output: 'Para generar el reporte ejecute el servicio /reporter-manager'
+                status: 'ok'
             });
         });
     } 
@@ -162,13 +158,12 @@ router.post('/run/reservation-summary', (req, res) => {
 //posibles parametros para devolver info sobre la ejecucion del comando (error, stdout, stderr)=>{}
 router.post('/run/display-reservation', (req, res) => {
     
-    const cmd = 'npx playwright test tests/display-reservation.spec.js';
+    const cmd = `npx playwright test ${process.env.TEST_DIR}display-reservation.spec.js`;
     try {
         exec(cmd, { cwd: path.resolve(__dirname, '..'),
          }, () => {
             res.json({
-                status: 'ok',
-                output: 'Para generar el reporte ejecute el servicio /reporter-manager'
+                status: 'ok'
             });
         });
     } 
@@ -196,7 +191,7 @@ router.post('/reports/agent', (req, res) => {
     if (!fs.existsSync(sourceHtml) || !fs.existsSync(sourceJson)) {
       return res.status(404).json({
         status: 'error',
-        error: 'index.html del reporte no encontrado'
+        error: 'Reporte no encontrado'
       });
     }
 
@@ -231,9 +226,7 @@ router.post('/reports/agent', (req, res) => {
 
     res.json({
       status: 'ok',
-      message: 'Reporte archivado correctamente',
-      reportUrlHTML: `/reports/${rpt_type}-${rndnumber}/report.html`,
-      reportUrlJson: `/reports/${rpt_type}-${rndnumber}/report.json`
+      message: 'Reporte archivado correctamente'
     });
 
   } catch (error) {
@@ -283,7 +276,6 @@ router.get('/reports/consolidate', (req, res) => {
 
     res.json({
       file: fileName,
-      savedTo: `/reports/${fileName}`,
       ...dataResult
     });
 
@@ -320,7 +312,7 @@ router.get('/reports/failed', (req, res) => {
 
 // endpoint para listar reportes
 router.get('/reports/list', (req, res) => {
-  const reportsDir = path.resolve(__dirname, '../consolid_results');
+  const reportsDir = path.resolve(process.env.CONSOLID_RESULT_PATH);
 
   const files = fs.readdirSync(reportsDir)
     .filter(f => f.startsWith('consolidated_results_') && f.endsWith('.json'));
@@ -344,7 +336,7 @@ router.get('/reports/compare', (req, res) => {
 
   const load = file =>
     JSON.parse(
-      fs.readFileSync(path.resolve(__dirname, '../consolid_results', file), 'utf8')
+      fs.readFileSync(path.resolve(process.env.CONSOLID_RESULT_PATH, file), 'utf8')
     );
 
   const r1 = load(a);
