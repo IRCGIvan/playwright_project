@@ -1,7 +1,8 @@
 import { defineConfig, devices } from '@playwright/test';
+import path from 'path';
 
 export default defineConfig({
-  testDir: 'src/tests',
+  testDir: path.resolve(process.cwd(), 'src/tests'),
   timeout: 180_000,
   retries: 0,
 
@@ -28,3 +29,7 @@ export default defineConfig({
     video: 'retain-on-failure'
   }
 });
+
+
+//C:\playwright_project\Playwright\playwright-report
+//C:\playwright_project\Playwright\src\routes

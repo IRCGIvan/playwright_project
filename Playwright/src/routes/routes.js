@@ -17,7 +17,7 @@ const __dirname = path.dirname(__filename);
 router.use(express.json());
 
 //posibles parametros para devolver info sobre la ejecucion del comando (error, stdout, stderr)=>{}
-router.post('/run/booking-hotel', (req, res) => {
+router.post('/run/hotel-booking', (req, res) => {
     const { itineraryId } = req.body;
 
     if (!itineraryId) {
@@ -27,9 +27,10 @@ router.post('/run/booking-hotel', (req, res) => {
         });
     }
 
-    const cmd = `npx playwright test ${process.env.TEST_DIR}full-booking.spec.js`;
+    const cmd = 'npx playwright test hotel-booking.spec.js';
+
     try {
-        exec(cmd, { cwd: path.resolve(__dirname, '..'),
+        exec(cmd, { cwd: path.resolve(__dirname, '..','..'),
                     env: {
                 ...process.env,
                 ITINERARY_ID: itineraryId   // VARIABLE DE ENTORNO
@@ -118,9 +119,10 @@ router.post('/archive-report', (req, res) => {
 //posibles parametros para devolver info sobre la ejecucion del comando (error, stdout, stderr)=>{}
 router.post('/run/widget', (req, res) => {
     
-    const cmd = `npx playwright test ${process.env.TEST_DIR}search_widget.spec.js`;
+    const cmd = 'npx playwright test search_widget.spec.js';
+    
     try {
-        exec(cmd, { cwd: path.resolve(__dirname, '..'),
+        exec(cmd, { cwd: path.resolve(__dirname, '..','..'),
          }, () => {
             res.json({
                 status: 'ok'
@@ -138,9 +140,11 @@ router.post('/run/widget', (req, res) => {
 //posibles parametros para devolver info sobre la ejecucion del comando (error, stdout, stderr)=>{}
 router.post('/run/reservation-summary', (req, res) => {
     
-    const cmd = `npx playwright test ${process.env.TEST_DIR}reserv-summary.spec.js`;
+    const cmd = 'npx playwright test reserv-summary.spec.js';
+
+    console.log(cmd);
     try {
-        exec(cmd, { cwd: path.resolve(__dirname, '..'),
+        exec(cmd, { cwd: path.resolve(__dirname, '..', '..'),
          }, () => {
             res.json({
                 status: 'ok'
@@ -158,9 +162,9 @@ router.post('/run/reservation-summary', (req, res) => {
 //posibles parametros para devolver info sobre la ejecucion del comando (error, stdout, stderr)=>{}
 router.post('/run/display-reservation', (req, res) => {
     
-    const cmd = `npx playwright test ${process.env.TEST_DIR}display-reservation.spec.js`;
+    const cmd = 'npx playwright test display-reservation.spec.js';
     try {
-        exec(cmd, { cwd: path.resolve(__dirname, '..'),
+        exec(cmd, { cwd: path.resolve(__dirname, '..','..'),
          }, () => {
             res.json({
                 status: 'ok'
@@ -291,7 +295,7 @@ router.get('/reports/consolidate', (req, res) => {
 router.get('/reports/failed', (req, res) => {
   try {
     const service = new ReportConsolidator(
-      path.resolve(__dirname, '../reports')
+      path.resolve(process.env.TARGET_REPORT_DIR)
     );
 
     const failedReports = service.getFailedReports();
