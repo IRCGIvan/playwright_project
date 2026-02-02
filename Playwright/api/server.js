@@ -18,7 +18,7 @@ const __dirname = path.dirname(__filename);
 app.use(express.json());
 
 //posibles parametros para devolver info sobre la ejecucion del comando (error, stdout, stderr)=>{}
-app.post('/run/booking', (req, res) => {
+app.post('/run/booking-hotel', (req, res) => {
     const { itineraryId } = req.body;
 
     if (!itineraryId) {
@@ -50,6 +50,7 @@ app.post('/run/booking', (req, res) => {
     }
 });
 
+//archiva los reportes incluida la data generada por play en caso que falle alguna prueba
 app.post('/archive-report', (req, res) => {
   const { itineraryId } = req.body;
 
@@ -185,7 +186,7 @@ app.post('/run/display-reservation', (req, res) => {
 
 // para gestionar los reportes de partes especificas del sistema
 // widgets display summary, etc...
-app.post('/reporter-manager', (req, res) => {
+app.post('/reports/agent', (req, res) => {
   const { rpt_type } = req.body;
   try {
     const playwrightReportDir = path.resolve(
@@ -255,8 +256,8 @@ app.use(
 );
 
 
-// dash para estadisticas de reportes
-app.get('/reports/dashboard', (req, res) => {
+// Consolida la informacion de las pruebas realizadas en un solo json
+app.get('/reports/consolidate', (req, res) => {
   try {
     const consolidator = new ReportConsolidator(
       path.resolve(__dirname, '../reports')
@@ -307,6 +308,7 @@ app.get('/reports/dashboard', (req, res) => {
   }
 });
 
+//listado de reportes fallidos
 app.get('/reports/failed', (req, res) => {
   try {
     const service = new ReportConsolidator(
