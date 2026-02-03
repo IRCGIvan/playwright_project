@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 import fs from 'fs';
 import { ReportConsolidator } from '../class/reportConsolid.js';
-import { getTimestamp } from '../helpers/utils.js'
+import { getTimestamp, getDate } from '../helpers/utils.js'
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -199,10 +199,11 @@ router.post('/reports/agent', (req, res) => {
       });
     }
 
-    const rndnumber = Math.floor(Math.random() * Math.pow(10, 6));
+    const date = getDate();
+    const dateTime = getTimestamp();
 
     const targetDir = path.resolve(
-      `${process.env.TARGET_REPORT_DIR}/${rpt_type}-${rndnumber}`
+      `${process.env.TARGET_REPORT_DIR}/${rpt_type}-${date}`
     );
 
     fs.mkdirSync(targetDir, { recursive: true });
@@ -210,13 +211,13 @@ router.post('/reports/agent', (req, res) => {
     // Copiar HTML (renombrado)
     fs.copyFileSync(
       sourceHtml,
-      path.join(targetDir, 'report.html')
+      path.join(targetDir, `report-${dateTime}.html`)
     );
 
     // Copiar json
     fs.copyFileSync(
       sourceJson,
-      path.join(targetDir, 'report.json')
+      path.join(targetDir, `report-${dateTime}.json`)
     );
 
     // Copiar carpeta data completa

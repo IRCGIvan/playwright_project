@@ -25,7 +25,7 @@ export class ReportConsolidator {
       .readdirSync(this.reportsRoot, { withFileTypes: true })
       .filter(d => d.isDirectory())
       .map(d => d.name);
-
+console.log(testTypes);
     for (const testType of testTypes) {
       const testDir = path.join(this.reportsRoot, testType);
       const reportFiles = findJsonReports(testDir);

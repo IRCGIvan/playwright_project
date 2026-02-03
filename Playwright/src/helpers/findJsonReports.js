@@ -9,7 +9,7 @@ export function findJsonReports(dir, reports = []) {
 
     if (entry.isDirectory()) {
       findJsonReports(fullPath, reports);
-    } else if (entry.isFile() && entry.name === 'report.json') {
+    } else if (entry.isFile() && entry.name.startsWith('report-') && entry.name.endsWith('.json')) {
       reports.push(fullPath);
     }
   }
