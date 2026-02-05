@@ -47,7 +47,69 @@ test('test', async ({ page }) => {
   await firstLink.click();
   
   const page2 = await page2Promise;
-  
+
   await expect(page2.getByRole('button', { name: 'Reservar' }).nth(1)).toBeVisible({ timeout: 120_000 });
+  await page2.getByRole('button', { name: 'Reservar' }).nth(1).click();
+
+  //pagina de pasajeros
+  await page2.locator('#first-name-adult-room-0-pax-0').click();
+  await page2.locator('#first-name-adult-room-0-pax-0').fill('Ivan');
+  await page2.locator('#last-name-adult-room-0-pax-0').click();
+  await page2.locator('#last-name-adult-room-0-pax-0').fill('Caraza');
+  await page2.locator('#document-numberadult-room-0-pax-0').click();
+  await page2.locator('#document-numberadult-room-0-pax-0').fill('95902718');
+  await page2.getByText('Mexico').click();
+  await page2.locator('#nationality-adult-room-0-pax-0').getByRole('textbox').fill('arg');
+  await page2.getByText('Argentina').click();
+  await page2.locator('div').filter({ hasText: /^Día$/ }).nth(3).click();
+  await page2.getByText('20', { exact: true }).click();
+  await page2.locator('div').filter({ hasText: /^Mes$/ }).nth(3).click();
+  await page2.getByText('Noviembre').click();
+  await page2.locator('.mat-mdc-select-placeholder').click();
+  await page2.getByText('1980').click();
+  await page2.locator('#contact-email').click();
+  await page2.locator('#contact-email').fill('ivan.caraza@testiando.co');
+  await page2.locator('#contact-phone').click();
+  await page2.locator('#contact-phone').fill('91126863150');
+  await expect(page2.locator('#terms-check-input')).toBeVisible({ timeout: 120_000 });
+  const checkbox = page2.locator('#terms-check-input');
+  await checkbox.check();
+  await expect(checkbox).toBeChecked();
+  await page2.locator('#book-btn').click();
+    
+    //pagina de pagos
+    await expect(page2.getByText('Espere por favor')).toBeVisible({ timeout: 120_000 });
+    await expect(page2.getByText('Espere por favor')).toBeHidden({ timeout: 120_000 });
+
+    await expect(page2.locator('#ctl00_ctl00_NetSiteContentPlaceHolder_NetFulfillmentContentPlaceHolder_btnApplyExpenses')).toBeVisible({ timeout: 120_000 });
+
+    await page2.locator('#ctl00_ctl00_NetSiteContentPlaceHolder_NetFulfillmentContentPlaceHolder_liCash input[name="fop"]').check();
+    await page2.locator('#ctl00_ctl00_NetSiteContentPlaceHolder_NetFulfillmentContentPlaceHolder_shopperPaymentInfoControl_ddlGender').selectOption('2');
+    await page2.locator('#ctl00_ctl00_NetSiteContentPlaceHolder_NetFulfillmentContentPlaceHolder_shopperPaymentInfoControl_ddlProvinces').selectOption('ARC');
+    await page2.locator('#ctl00_ctl00_NetSiteContentPlaceHolder_NetFulfillmentContentPlaceHolder_shopperPaymentInfoControl_ddlCities').selectOption('BUE');
+    await page2.locator('#ctl00_ctl00_NetSiteContentPlaceHolder_NetFulfillmentContentPlaceHolder_shopperPaymentInfoControl_txtStreet').click();
+    await page2.locator('#ctl00_ctl00_NetSiteContentPlaceHolder_NetFulfillmentContentPlaceHolder_shopperPaymentInfoControl_txtStreet').fill('vanazuela');
+    await page2.locator('#ctl00_ctl00_NetSiteContentPlaceHolder_NetFulfillmentContentPlaceHolder_shopperPaymentInfoControl_txtStreetNumber').click();
+    await page2.locator('#ctl00_ctl00_NetSiteContentPlaceHolder_NetFulfillmentContentPlaceHolder_shopperPaymentInfoControl_txtStreetNumber').fill('1970');
+    await page2.locator('#ctl00_ctl00_NetSiteContentPlaceHolder_NetFulfillmentContentPlaceHolder_shopperPaymentInfoControl_txtNeighborhood').click();
+    await page2.locator('#ctl00_ctl00_NetSiteContentPlaceHolder_NetFulfillmentContentPlaceHolder_shopperPaymentInfoControl_txtNeighborhood').fill('balvanera');
+    await page2.locator('#ctl00_ctl00_NetSiteContentPlaceHolder_NetFulfillmentContentPlaceHolder_shopperPaymentInfoControl_txtPostCode').click();
+    await page2.locator('#ctl00_ctl00_NetSiteContentPlaceHolder_NetFulfillmentContentPlaceHolder_shopperPaymentInfoControl_txtPostCode').fill('1096');
+    
+    //esperamos por el boton de pagos
+    await page2.locator('#ctl00_ctl00_NetSiteContentPlaceHolder_NetFulfillmentContentPlaceHolder_btnPaymentMethodCash').click();
+
+    //esperamos por el boton de direccion al display despues del pago
+    await expect(page2.getByText('Por favor, espere un momento')).toBeVisible({ timeout: 120_000 });
+    await expect(page2.getByText('Por favor, espere un momento')).toBeHidden({ timeout: 120_000 });
+
+    await expect(page2.getByText('Espere un momento, estamos procesando su pago')).toBeVisible({ timeout: 120_000 });
+    await expect(page2.getByText('Espere un momento, estamos procesando su pago')).toBeHidden({ timeout: 120_000 });
+
+    await page2.getByRole('button', { name: 'Ver tu itinerario' }).click();
+    await expect(page2.getByText('Precio Total del Itinerario')).toBeVisible({ timeout: 120_000 });
+    await expect(page2.getByText('Tarifas Base del Itinerario')).toBeVisible({ timeout: 120_000 });
+
+
 
 });
