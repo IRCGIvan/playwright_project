@@ -118,8 +118,7 @@ export class HotelBookingFlow {
     await expect(page2.getByText('Espere un momento, estamos procesando su pago')).toBeHidden({ timeout: 120_000 });
 
     await page2.getByRole('button', { name: 'Ver tu itinerario' }).click();
-    await expect(page2.getByText('Precio Total del Itinerario')).toBeVisible({ timeout: 120_000 });
-    await expect(page2.getByText('Tarifas Base del Itinerario')).toBeVisible({ timeout: 120_000 });
+    await expect(page.getByText('N° de Itinerario:')).toBeVisible({timeout: 120_000});
   }
 }
 

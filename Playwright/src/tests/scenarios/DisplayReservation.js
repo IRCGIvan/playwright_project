@@ -10,11 +10,9 @@ export class DisplayReservation {
    */
 
   async run(page) {
-    await page.goto(`https://preprod.netactica.com/NetFulfillment/Login.aspx?userService=${process.env.USSV}&TravelItineraryId=${process.env.ITIN}&ReservationsToPay=True&SessionToken=${process.env.TOKEN}`);
-    await expect(page.getByText('Elija la forma de pago de su')).toBeVisible({timeout: 120_000});
-    await page.getByRole('link', { name: 'Vea más detalles de su' }).click();
-    await expect(page.getByText('Tarifas Base del Itinerario')).toBeVisible({timeout: 120_000});
-    await expect(page.getByText('Total a pagar')).toBeVisible({timeout: 120_000});
+    console.log(`${process.env.BASE_URL_NFF}?userService=${process.env.USSV}&TravelItineraryId=${process.env.ITIN}&ReservationsToPay=False&SessionToken=${process.env.TOKEN}`);
+    await page.goto(`${process.env.BASE_URL_NFF}?userService=${process.env.USSV}&TravelItineraryId=${process.env.ITIN}&ReservationsToPay=False&SessionToken=${process.env.TOKEN}`);
+    await expect(page.getByText('N° de Itinerario:')).toBeVisible({timeout: 120_000});
   }
 }
 

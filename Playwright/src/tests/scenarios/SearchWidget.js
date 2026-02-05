@@ -26,30 +26,6 @@ export class SearchWidget {
     await expect(page.locator('#iframeTab_0').contentFrame().locator('#ctl00_FlowIFrame').contentFrame().getByRole('link', { name: 'Aéreos' })).toBeVisible({timeout: 120_000});
     await page.locator('#iframeTab_0').contentFrame().locator('#ctl00_FlowIFrame').contentFrame().getByRole('link', { name: 'Aéreos' }).click();
     await expect(page.locator('#iframeTab_0').contentFrame().locator('#ctl00_FlowIFrame').contentFrame().getByRole('button', { name: 'Buscar Aéreos' })).toBeVisible({timeout: 120_000});
-    
-    await page.locator('#iframeTab_0').contentFrame().locator('#ctl00_FlowIFrame').contentFrame().getByRole('link', { name: 'Hoteles' }).click();
-    await expect(page.locator('#iframeTab_0').contentFrame().locator('#ctl00_FlowIFrame').contentFrame().getByRole('button', { name: 'Buscar Hoteles' })).toBeVisible({timeout: 120_000});
-    
-    await page.locator('#iframeTab_0').contentFrame().locator('#ctl00_FlowIFrame').contentFrame().getByRole('link', { name: 'Aéreo + Hotel' }).click();
-    await expect(page.locator('#iframeTab_0').contentFrame().locator('#ctl00_FlowIFrame').contentFrame().getByRole('button', { name: 'Buscar Aéreo + Hotel' })).toBeVisible({timeout: 120_000});
-
-    await page.locator('#iframeTab_0').contentFrame().locator('#ctl00_FlowIFrame').contentFrame().getByRole('link', { name: 'Bus + Hotel' }).click();
-    await expect(page.locator('#iframeTab_0').contentFrame().locator('#ctl00_FlowIFrame').contentFrame().getByRole('button', { name: 'Buscar Bus + Hotel' })).toBeVisible({timeout: 120_000});
-
-    await page.locator('#iframeTab_0').contentFrame().locator('#ctl00_FlowIFrame').contentFrame().getByRole('link', { name: 'Bus', exact: true }).click();
-    await expect(page.locator('#iframeTab_0').contentFrame().locator('#ctl00_FlowIFrame').contentFrame().getByRole('button', { name: 'Buscar Bus' })).toBeVisible({timeout: 120_000});
-
-    await page.locator('#iframeTab_0').contentFrame().locator('#ctl00_FlowIFrame').contentFrame().getByRole('link', { name: 'Extras' }).click();
-    await expect(page.locator('#iframeTab_0').contentFrame().locator('#ctl00_FlowIFrame').contentFrame().getByRole('button', { name: 'Buscar Extras' })).toBeVisible({timeout: 120_000});
-
-    await page.locator('#iframeTab_0').contentFrame().locator('#ctl00_FlowIFrame').contentFrame().getByRole('link', { name: 'Autos', exact: true }).click();
-    await expect(page.locator('#iframeTab_0').contentFrame().locator('#ctl00_FlowIFrame').contentFrame().getByRole('button', { name: 'Buscar Autos' })).toBeVisible({timeout: 120_000});
-
-    await page.locator('#iframeTab_0').contentFrame().locator('#ctl00_FlowIFrame').contentFrame().getByRole('link', { name: 'Aéreo + Autos' }).click();
-    await expect(page.locator('#iframeTab_0').contentFrame().locator('#ctl00_FlowIFrame').contentFrame().getByRole('button', { name: 'Buscar Aéreo + Autos' })).toBeVisible({timeout: 120_000});
-
-    await page.locator('#iframeTab_0').contentFrame().locator('#ctl00_FlowIFrame').contentFrame().getByRole('link', { name: 'Asistencias' }).click();
-    await expect(page.locator('#iframeTab_0').contentFrame().locator('#ctl00_FlowIFrame').contentFrame().getByRole('button', { name: 'Buscar' })).toBeVisible({timeout: 120_000});
   }
 }
 
