@@ -12,9 +12,11 @@ export class HotelBookingFlow {
 
   async run(page) {
     await page.goto(process.env.BASE_URL);
-    await page.getByRole('textbox', { name: 'Usuario:' }).fill('IvanC');
-    await page.getByRole('textbox', { name: 'Empresa:' }).fill('netactica');
-    await page.getByRole('textbox', { name: 'Contraseña:' }).fill('M4rc0P0l0$');
+    
+    //login en netadmin
+    await page.getByRole('textbox', { name: 'Usuario:' }).fill(process.env.USER);
+    await page.getByRole('textbox', { name: 'Empresa:' }).fill(process.env.USSV);
+    await page.getByRole('textbox', { name: 'Contraseña:' }).fill(process.env.PASS);
     await page.getByRole('button', { name: 'Ingresar' }).click();
 
     //widget de busqueda de producto
@@ -118,7 +120,8 @@ export class HotelBookingFlow {
     await expect(page2.getByText('Espere un momento, estamos procesando su pago')).toBeHidden({ timeout: 120_000 });
 
     await page2.getByRole('button', { name: 'Ver tu itinerario' }).click();
-    await expect(page.getByText('N° de Itinerario:')).toBeVisible({timeout: 120_000});
+    await expect(page2.getByText('Precio Total del Itinerario')).toBeVisible({ timeout: 120_000 });
+    await expect(page2.getByText('Tarifas Base del Itinerario')).toBeVisible({ timeout: 120_000 });
   }
 }
 
