@@ -10,7 +10,7 @@ export class SearchWidget {
    */
 
   async run(page) {
-    await page.goto('https://preprod.netactica.com/NetAdmin/Login.aspx');    
+    await page.goto(process.env.BASE_URL);
 
     //login en netadmin
     await page.getByRole('textbox', { name: 'Usuario:' }).fill(process.env.USER);

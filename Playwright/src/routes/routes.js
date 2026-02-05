@@ -38,7 +38,7 @@ router.post('/run/hotel-booking', (req, res) => {
 });
 
 //posibles parametros para devolver info sobre la ejecucion del comando (error, stdout, stderr)=>{}
-router.post('/run/widget', (req, res) => {
+router.post('/run/search-widget', (req, res) => {
     
     const cmd = 'npx playwright test search_widget.spec.js';
     
