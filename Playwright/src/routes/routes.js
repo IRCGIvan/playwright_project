@@ -18,23 +18,11 @@ router.use(express.json());
 
 //posibles parametros para devolver info sobre la ejecucion del comando (error, stdout, stderr)=>{}
 router.post('/run/hotel-booking', (req, res) => {
-    const { itineraryId } = req.body;
-
-    if (!itineraryId) {
-        return res.status(400).json({
-        status: 'error',
-        error: 'itineraryId es requerido'
-        });
-    }
-
+    
     const cmd = 'npx playwright test hotel-booking.spec.js';
 
     try {
         exec(cmd, { cwd: path.resolve(__dirname, '..','..'),
-                    env: {
-                ...process.env,
-                ITINERARY_ID: itineraryId   // VARIABLE DE ENTORNO
-            }
          }, () => {
             res.json({
                 status: 'ok'
@@ -47,73 +35,6 @@ router.post('/run/hotel-booking', (req, res) => {
             error: error.message
         });
     }
-});
-
-//archiva los reportes incluida la data generada por play en caso que falle alguna prueba
-router.post('/archive-report', (req, res) => {
-  const { itineraryId } = req.body;
-
-  if (!itineraryId) {
-    return res.status(400).json({
-      status: 'error',
-      error: 'itineraryId es requerido'
-    });
-  }
-
-  try {
-    const playwrightReportDir = path.resolve(
-      process.env.REPORT_PATH
-    );
-
-    const sourceHtml = path.join(playwrightReportDir, 'index.html'); // some versions use index.html
-    const sourceJson = path.join(playwrightReportDir, 'report.json'); // some versions use index.html
-    const sourceData = path.join(playwrightReportDir, 'data');
-
-    if (!fs.existsSync(sourceHtml) || !fs.existsSync(sourceJson)) {
-      return res.status(404).json({
-        status: 'error',
-        error: 'Reportes no encontrados'
-      });
-    }
-
-    const targetDir = path.resolve(
-      `${process.env.TARGET_REPORT_DIR}/itinerary-${itineraryId}`
-    );
-
-    fs.mkdirSync(targetDir, { recursive: true });
-
-    // Copiar HTML (renombrado)
-    fs.copyFileSync(
-      sourceHtml,
-      path.join(targetDir, 'report.html')
-    );
-
-    // Copiar Json 
-    fs.copyFileSync(
-      sourceJson,
-      path.join(targetDir, 'report.json')
-    );
-
-    // Copiar carpeta data completa
-    if (fs.existsSync(sourceData)) {
-        fs.cpSync(
-            sourceData,
-            path.join(targetDir, 'data'),
-            { recursive: true }
-        );
-    }
-    
-    res.json({
-      status: 'ok',
-      message: 'Reporte archivado correctamente'
-    });
-
-  } catch (error) {
-    res.status(500).json({
-      status: 'error',
-      error: error.message
-    });
-  }
 });
 
 //posibles parametros para devolver info sobre la ejecucion del comando (error, stdout, stderr)=>{}

@@ -5,7 +5,6 @@ import { sumarDias } from '../helpers/utils.js';
 dotenv.config();
 
 test('test', async ({ page }) => {
-  //await page.goto('https://preprod.netactica.com/NetAdmin/Login.aspx');
   await page.goto(process.env.BASE_URL);
   await page.getByRole('textbox', { name: 'Usuario:' }).fill('IvanC');
   await page.getByRole('textbox', { name: 'Empresa:' }).fill('netactica');
