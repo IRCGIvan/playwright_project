@@ -34,7 +34,6 @@ export class HotelBookingFlow {
     await page.locator('#iframeTab_0').contentFrame().locator('#ctl00_FlowIFrame').contentFrame().getByRole('listitem').filter({ hasText: 'Bogotá Bogotá, Distrito' }).click();
     const checkin = sumarDias(parseInt(process.env.PLUS_DAYS)).toString();
     const checkout = sumarDias(parseInt(process.env.PLUS_DAYS)+1).toString();
-    console.log(checkin+'===================='+checkout);
     await page.locator('#iframeTab_0').contentFrame().locator('#ctl00_FlowIFrame').contentFrame().locator('#ctl00_ctl00_NetSiteContentPlaceHolder_NetFulfillmentContentPlaceHolder_txtCheckIn').fill(checkin);
     await page.locator('#iframeTab_0').contentFrame().locator('#ctl00_FlowIFrame').contentFrame().locator('#ctl00_ctl00_NetSiteContentPlaceHolder_NetFulfillmentContentPlaceHolder_txtCheckOut').fill(checkout);
     
