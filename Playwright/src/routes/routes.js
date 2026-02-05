@@ -25,7 +25,8 @@ router.post('/run/hotel-booking', (req, res) => {
         exec(cmd, { cwd: path.resolve(__dirname, '..','..'),
          }, () => {
             res.json({
-                status: 'ok'
+                status: 'ok',
+                test_name: 'Hotel book flow'
             });
         });
     } 
@@ -46,7 +47,8 @@ router.post('/run/search-widget', (req, res) => {
         exec(cmd, { cwd: path.resolve(__dirname, '..','..'),
          }, () => {
             res.json({
-                status: 'ok'
+                status: 'ok',
+                test_name: 'Search widget'
             });
         });
     } 
@@ -68,7 +70,8 @@ router.post('/run/reservation-summary', (req, res) => {
         exec(cmd, { cwd: path.resolve(__dirname, '..', '..'),
          }, () => {
             res.json({
-                status: 'ok'
+                status: 'ok',
+                test_name: 'Reservation summary'
             });
         });
     } 
@@ -88,7 +91,8 @@ router.post('/run/display-reservation', (req, res) => {
         exec(cmd, { cwd: path.resolve(__dirname, '..','..'),
          }, () => {
             res.json({
-                status: 'ok'
+                status: 'ok',
+                test_name: 'Display reservation'
             });
         });
     } 
