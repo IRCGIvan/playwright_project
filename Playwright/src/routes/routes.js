@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 import fs from 'fs';
 import { ReportConsolidator } from '../class/reportConsolid.js';
-import { getTimestamp, getDate } from '../helpers/utils.js'
+import { getTimestamp, getDate, parseFolderName } from '../helpers/utils.js'
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -299,5 +299,64 @@ router.get('/reports/compare', (req, res) => {
   });
 });
 
+// servir los archivos HTML
+router.get('/reports/list-html-reports', async (req, res) => {
+  
+  const PLAYWRIGHT_REPORTS_PATH = path.resolve(process.env.TARGET_REPORT_DIR);
+
+  console.log('Serving reports from:', PLAYWRIGHT_REPORTS_PATH);
+
+  try {
+    if (!fs.existsSync(PLAYWRIGHT_REPORTS_PATH)) {
+      return res.json([])
+    }
+
+    const folders = fs.readdirSync(PLAYWRIGHT_REPORTS_PATH, {
+      withFileTypes: true
+    })
+
+    const results = []
+
+    for (const dirent of folders) {
+      if (!dirent.isDirectory()) continue
+
+      const folder = dirent.name
+      const folderPath = path.join(PLAYWRIGHT_REPORTS_PATH, folder)
+
+      const { test_type, raw_date, date } = parseFolderName(folder)
+
+      // Leer archivos HTML dentro de la carpeta
+      const files = fs.readdirSync(folderPath)
+
+      const htmlFiles = files.filter(f =>
+        f.toLowerCase().endsWith('.html')
+      )
+
+      results.push({
+        test_type,
+        date,
+        raw_date,
+        folder,
+        html_files: htmlFiles.sort()
+      })
+    }
+
+    // Ordenar por fecha desc (más nuevo primero)
+    results.sort((a, b) => {
+      if (!a.raw_date) return 1
+      if (!b.raw_date) return -1
+      return b.raw_date.localeCompare(a.raw_date)
+    })
+
+    res.json(results)
+  } catch (err) {
+    console.error('Error leyendo reports:', err)
+    res.status(500).json({
+      error: 'Error leyendo directorio de reports'
+    })
+  }
+})
+
+router.use('/reports', express.static(path.resolve(process.env.TARGET_REPORT_DIR)));
 
 export default router;

@@ -32,3 +32,30 @@ export function yyyymmdd_format(p){
   const dd = String(p.getDate()).padStart(2, '0');
   return `${yyyy}-${mm}-${dd}`;
 }
+
+export function parseFolderName(folderName) {
+  // split por último guión
+  const lastDash = folderName.lastIndexOf('-')
+  if (lastDash === -1) {
+    return {
+      test_type: folderName,
+      raw_date: null,
+      date: null
+    }
+  }
+
+  const test_type = folderName.substring(0, lastDash).trim()
+  const raw = folderName.substring(lastDash + 1).trim()
+
+  // Esperado YYYYMMDD
+  let date = null
+  if (/^\d{8}$/.test(raw)) {
+    date = `${raw.substring(0, 4)}-${raw.substring(4, 6)}-${raw.substring(6, 8)}`
+  }
+
+  return {
+    test_type,
+    raw_date: raw,
+    date
+  }
+}
