@@ -70,7 +70,7 @@
 
     <!-- DIFERENCIA GLOBAL ERRORES -->
     <div v-if="errorDiff !== null" class="mb-4 font-weight-bold">
-      Diferencia errores:
+      Diferencia de errores:
       <span :class="diffErrorClass">
         {{ errorArrow }} 
         ({{ totalErrorsBefore }} → {{ totalErrorsAfter }})
