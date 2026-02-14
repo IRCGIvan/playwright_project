@@ -15,6 +15,12 @@
           </v-list-item-title>
         </v-list-item>
 
+        <v-list-item to="/jmeter" prepend-icon="mdi-file-chart" router>
+          <v-list-item-title>
+            Jmeter Data
+          </v-list-item-title>
+        </v-list-item>
+
       </v-list>
     </v-navigation-drawer>
 
