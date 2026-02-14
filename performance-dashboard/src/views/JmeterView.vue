@@ -6,22 +6,22 @@
     <v-row>
       <v-col cols="12" md="6">
         <v-file-input
-          label="CSV BEFORE"
+          label="CSV ANTES"
           accept=".csv"
           prepend-icon="mdi-file"
           @update:modelValue="loadFile($event, 'before')"
         />
-        <div v-if="beforeRaw" class="text-success">✔ Archivo BEFORE cargado</div>
+        <div v-if="beforeRaw" class="text-success">✔ Archivo ANTES cargado</div>
       </v-col>
 
       <v-col cols="12" md="6">
         <v-file-input
-          label="CSV AFTER"
+          label="CSV DESPUES"
           accept=".csv"
           prepend-icon="mdi-file"
           @update:modelValue="loadFile($event, 'after')"
         />
-        <div v-if="afterRaw" class="text-success">✔ Archivo AFTER cargado</div>
+        <div v-if="afterRaw" class="text-success">✔ Archivo DESPUES cargado</div>
       </v-col>
     </v-row>
 
@@ -33,15 +33,6 @@
     >
       Procesar archivos
     </v-btn>
-
-    <!-- DIFERENCIA GLOBAL ERRORES -->
-    <div v-if="errorDiff !== null" class="mb-4 font-weight-bold">
-      Diferencia errores:
-      <span :class="diffErrorClass">
-        {{ errorArrow }} {{ errorDiff }} %
-        ({{ totalErrorsBefore }} → {{ totalErrorsAfter }})
-      </span>
-    </div>
 
     <div v-if="okCount" class="mb-2 font-weight-bold">
       Total registros OK (200): {{ okCount }}
@@ -81,13 +72,13 @@
     <div v-if="errorDiff !== null" class="mb-4 font-weight-bold">
       Diferencia errores:
       <span :class="diffErrorClass">
-        {{ errorArrow }} {{ errorDiff }} %
+        {{ errorArrow }} 
         ({{ totalErrorsBefore }} → {{ totalErrorsAfter }})
       </span>
     </div>
 
     <!-- BEFORE -->
-    <h3 v-if="filteredBefore.length" class="mb-2">Errores agrupados BEFORE</h3>
+    <h3 v-if="filteredBefore.length" class="mb-2">Errores agrupados ANTES</h3>
 
     <v-data-table
       v-if="filteredBefore.length"
@@ -104,7 +95,7 @@
     </v-data-table>
 
     <!-- AFTER -->
-    <h3 v-if="filteredAfter.length" class="mb-2">Errores agrupados AFTER</h3>
+    <h3 v-if="filteredAfter.length" class="mb-2">Errores agrupados DESPUES</h3>
 
     <v-data-table
       v-if="filteredAfter.length"
@@ -145,11 +136,11 @@ const headers = [
   { title: 'Label', key: 'label' },
   { title: 'Code', key: 'responseCode' },
   { title: 'Message', key: 'responseMessage' },
-  { title: 'Elapsed Avg Before', key: 'elapsedBefore' },
-  { title: 'Elapsed Avg After', key: 'elapsedAfter' },
+  { title: 'Elapsed Avg Antes', key: 'elapsedBefore' },
+  { title: 'Elapsed Avg Despues', key: 'elapsedAfter' },
   { title: 'Elapsed Diff', key: 'elapsedDiff' },
-  { title: 'Latency Avg Before', key: 'latencyBefore' },
-  { title: 'Latency Avg After', key: 'latencyAfter' },
+  { title: 'Latency Avg Antes', key: 'latencyBefore' },
+  { title: 'Latency Avg Despues', key: 'latencyAfter' },
   { title: 'Latency Diff', key: 'latencyDiff' },
   { title: 'P95 elapsed', key: 'p95' },
   { title: 'P99 elapsed', key: 'p99' },
