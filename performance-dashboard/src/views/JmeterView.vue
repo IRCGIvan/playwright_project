@@ -98,7 +98,6 @@
 <script setup>
 import Papa from 'papaparse'
 import { ref, computed } from 'vue'
-import JmeterCharts from '@/views/JmeterCharts.vue'
 
 const beforeRaw = ref(null)
 const afterRaw = ref(null)
