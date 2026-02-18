@@ -12,6 +12,7 @@
     "@amcharts/amcharts5": "^5.15.6",
     "@mdi/font": "^7.4.47",
     "axios": "^1.13.5",
+    "chart.js": "^4.5.1",
     "papaparse": "^5.5.3",
     "sass": "^1.97.3",
     "vue": "^3.5.27",

@@ -92,13 +92,13 @@
       items-per-page="50"
       class="elevation-1"
     />
-
   </v-container>
 </template>
 
 <script setup>
 import Papa from 'papaparse'
 import { ref, computed } from 'vue'
+import JmeterCharts from '@/views/JmeterCharts.vue'
 
 const beforeRaw = ref(null)
 const afterRaw = ref(null)
@@ -281,6 +281,7 @@ function process(){
 
   const diff=((totalErrorsAfter.value-totalErrorsBefore.value)/Math.max(totalErrorsBefore.value,1))*100
   errorDiff.value=diff.toFixed(2)
+
 }
 
 const filteredBefore=computed(()=>{
