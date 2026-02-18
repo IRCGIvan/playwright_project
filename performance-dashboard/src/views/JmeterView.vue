@@ -114,7 +114,7 @@ const totalErrorsAfter = ref(0)
 const errorDiff = ref(null)
 
 const headers = [
-  { title:'Label', key:'label'},
+  { title:'EndPoint', key:'label'},
   { title:'Code', key:'responseCode'},
   { title:'Message', key:'responseMessage'},
   { title:'Elapsed Avg Antes', key:'elapsedBefore'},
@@ -132,9 +132,9 @@ const headers = [
 ]
 
 const errorHeaders = [
+  { title:'EndPoint', key:'label'},
   { title:'Code', key:'responseCode'},
   { title:'Message', key:'responseMessage'},
-  { title:'Label', key:'label'},
   { title:'Cantidad', key:'count'},
   { title:'% fallos', key:'failPercent'}
 ]
